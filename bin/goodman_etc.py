@@ -29,6 +29,7 @@ Command Line Usage
     -ld [0,3,7,10,14] 
     -see [Seeing]
     -expt [Exp Time]
+    -num [Number of exposures]
 
     Options
     ^^^^^^^
