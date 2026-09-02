@@ -83,6 +83,9 @@ Command Line Usage
     -expt
     The exposure time in seconds
 
+    -nexp
+    The number of exposures
+
 Description
 -----------
 
