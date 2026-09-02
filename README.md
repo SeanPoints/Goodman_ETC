@@ -20,9 +20,9 @@ The code that performs the calculations requires NumPy, AstroPy, SciPy, and Matp
 ## Structure
 
 The repository contains four subdirectories:
-* bin
-* eff
-* sky
-* spec
+* bin - contains the executable to run the code
+* eff - contains the available Goodman efficiency curves
+* sky - contains a set of sky models for various Lunar phases
+* spec - contains model spectra templates of sources
 
 ---
