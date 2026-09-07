@@ -128,6 +128,7 @@ exec_dir = os.getcwd()
 SPECDIR = exec_dir + '/spec/'
 SKYDIR = exec_dir + '/sky/'
 EFFDIR = exec_dir + '/eff/'
+OUTDIR = exec_dir + '/results/'
 
 # ------------------------------------------------------------
 # Telescope data
@@ -782,7 +783,7 @@ def plot_4spectrum(
     plt.tight_layout(rect=[0, 0, 1, 0.95])
 
     plt.savefig(
-        exec_dir + "/" + plotname,
+        OUTDIR + "/" + plotname,
         dpi=300,
         bbox_inches="tight",
     )
@@ -810,6 +811,7 @@ def steer(argv):
     seeing = 1.0
     exptime = 60.0
     nexp = 1
+    outres = 'yes'
 
     i = 1
     while i < len(argv):
@@ -852,9 +854,12 @@ def steer(argv):
         elif argv[i] == '-expt':
             i += 1
             exptime = float(argv[i])
-        elif argv[i] =='-num':
+        elif argv[i] == '-num':
             i += 1
             nexp = int(argv[i])
+        elif argv[i] == '-outfits':
+            i += 1
+            outres = argv[i]
         i += 1    
 
     # Get gain and readout noise
@@ -931,10 +936,19 @@ def steer(argv):
     src1 = f"Single {exptime}s Exposure {grism}{obsmode}"
     src2 = rf"{nexp} $\times$ {exptime}s Exposures {grism}{obsmode}"
 
+    if not os.path.exists(OUTDIR):
+        os.makedirs(OUTDIR)
+
     plot_4spectrum(s2n, source_spec, sky_spec, noise_spec,
         wave_eff, grism, obsmode, spec_type, vmag, seeing, exptime,
         nexp, slit, moon_phase, src1, src2, exec_dir)
 
+    print("Source:", source_spec)
+    print("Noise:", noise_spec)
+    print("Sky:", sky_spec)
+    print("S2N:", s2n)
+    print("Wavelength:", wave_eff)
+    print(len(source_spec), len(noise_spec), len(sky_spec), len(s2n), len(wave_eff))
 
 
 if __name__ == "__main__":
