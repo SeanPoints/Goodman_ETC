@@ -30,6 +30,7 @@ Command Line Usage
     -see [Seeing]
     -expt [Exp Time]
     -num [Number of exposures]
+    -out [yes/no]
 
     Options
     ^^^^^^^
@@ -86,6 +87,9 @@ Command Line Usage
 
     -num
     The number of exposures
+
+    -out
+    Make output FITS files and AstroPy table
 
 Description
 -----------
@@ -857,7 +861,7 @@ def steer(argv):
         elif argv[i] == '-num':
             i += 1
             nexp = int(argv[i])
-        elif argv[i] == '-outfits':
+        elif argv[i] == '-out':
             i += 1
             outres = argv[i]
         i += 1    
