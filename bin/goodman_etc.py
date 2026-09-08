@@ -865,6 +865,9 @@ def make_output(source_spec, noise_spec, sky_spec, s2n, wave_eff, gain, tname):
     fname = fname.replace('txt','fits')
     write_iraf_spec(fname, src, wave_eff, bunit='count')
 
+    sname = fname.replace('spec', 's2n')
+    write_iraf_spec(sname, s2n, wave_eff, bunit='dimensionless')
+
 
 
 # ============================================================
