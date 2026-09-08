@@ -796,6 +796,78 @@ def plot_4spectrum(
     plt.close(fig)
 
 # ============================================================
+# Strip units from NumPy array
+# ============================================================
+
+def strip_units(arr):
+    if hasattr(arr, "value"):
+        return np.asarray(arr.value)
+    else:
+        return np.asarray(arr)
+
+# ============================================================
+# Write output FITS files
+# ============================================================
+
+def write_iraf_spec(filename, flux, wave, bunit='count'):
+    """
+    Write a regularly sampled 1D spectrum as a FITS image
+    suitable for IRAF onedspec.
+    """
+
+    flux = np.asarray(flux.value if hasattr(flux, "value") else flux)
+    wave = np.asarray(wave.value if hasattr(wave, "value") else wave)
+
+    if len(flux) != len(wave):
+        raise ValueError("flux and wave must have the same length")
+
+    dwave = np.diff(wave)
+
+    if not np.allclose(dwave, dwave[0]):
+        raise ValueError("Wavelength array is not regularly sampled")
+
+    header = fits.Header()
+
+    header["CTYPE1"] = "LINEAR"
+    header["CRVAL1"] = wave[0]
+    header["CRPIX1"] = 1.0
+    header["CDELT1"] = dwave[0]
+    header["CUNIT1"] = "Angstrom"
+    header["BUNIT"] = bunit
+
+    hdu = fits.PrimaryHDU(
+        data=flux.astype(np.float32),
+        header=header
+    )
+
+    hdu.writeto(filename, overwrite=True)
+
+# ============================================================
+# Make output files
+# ============================================================
+
+def make_output(source_spec, noise_spec, sky_spec, s2n, wave_eff, gain, tname):
+    results = Table()
+    src = source_spec / gain
+    sky = sky_spec / gain
+    results["Wave"] = strip_units(wave_eff)
+    results["Source"] = strip_units(src)
+    results["Sky"] = strip_units(sky)
+    results["S2N"] = strip_units(s2n)
+    results["Source"].format = ".2f"
+    results["Sky"].format = ".2f"
+    results["S2N"].format = ".2f"
+
+    results.write(OUTDIR + tname, format="ascii.fixed_width_two_line",
+        overwrite=True)
+
+    fname = OUTDIR + "spec_" + tname
+    fname = fname.replace('txt','fits')
+    write_iraf_spec(fname, src, wave_eff, bunit='count')
+
+
+
+# ============================================================
 # Main steering program
 # ============================================================
 
@@ -943,16 +1015,26 @@ def steer(argv):
     if not os.path.exists(OUTDIR):
         os.makedirs(OUTDIR)
 
+    print(f"Making output plots in {OUTDIR}.")
     plot_4spectrum(s2n, source_spec, sky_spec, noise_spec,
         wave_eff, grism, obsmode, spec_type, vmag, seeing, exptime,
         nexp, slit, moon_phase, src1, src2, exec_dir)
 
-    print("Source:", source_spec)
-    print("Noise:", noise_spec)
-    print("Sky:", sky_spec)
-    print("S2N:", s2n)
-    print("Wavelength:", wave_eff)
-    print(len(source_spec), len(noise_spec), len(sky_spec), len(s2n), len(wave_eff))
+    #print("Source:", source_spec)
+    #print("Noise:", noise_spec)
+    #print("Sky:", sky_spec)
+    #print("S2N:", s2n)
+    #print("Wavelength:", wave_eff)
+    #print(len(source_spec), len(noise_spec), len(sky_spec), len(s2n), len(wave_eff))
+    #print(gain)
+
+    if outres == 'yes':
+        tname = f"{spec_type}_{vmag}mag_{grism}{obsmode}_lp{moon_phase}.txt"
+        print(f"Copying results to {OUTDIR}.")
+        make_output(source_spec, noise_spec, sky_spec, s2n, wave_eff, gain,
+            tname)
+    else:
+        print(f"To make output files, set flag \'-out\' to yes.")
 
 
 if __name__ == "__main__":
