@@ -78,6 +78,11 @@ These plots are:<br>
 (Lower Left) Predicted electrons per spectral bin for source plus sky and noise spectra for 1 x Exptime spectrum<br> 
 (Lower Right) Predicted electrons per spectral bin for source plus sky and noise spectra for N x ExpTime spectra<br> 
 
+If the "-out" argument is "yes", the software will additionally produce an AstroPy table that lists wavelength, source counts, 
+sky counts, and S/N for each wavelength. The numbers in the table are determined by dividing the electrons detected by the 
+gain (electrons per ADU) selected.  This was selected to facilitate comparisons with real data.  This option also write two
+1-D spectra FITS files for the source and the calculated S/N per spectral bin.
+
 ---
 
 ## Contributions or comments
