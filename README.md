@@ -24,6 +24,7 @@ The repository contains four subdirectories:
 * eff - contains the available Goodman efficiency curves
 * sky - contains a set of sky models for various Lunar phases
 * spec - contains model spectra templates of sources
+* results - this directory is created by the software for the output (figures, FITS files, and tables)
 
 ---
 
