@@ -69,6 +69,13 @@ Options:
 
 ---
 
+## Output
+
+Upon successful completion of running the code, the software automatically produces a PNG file that contains four subplots.
+These plots are: (Upper Left)
+
+---
+
 ## Contributions or comments
 
 Contributions are welcome as are coments to improve the code to provide additional
