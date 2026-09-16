@@ -72,11 +72,11 @@ Options:
 ## Output
 
 Upon successful completion of running the code, the software automatically produces a PNG file that contains four subplots.
-These plots are: 
-(Upper Left) S/N plot for 1 x ExpTime spectrum. 
-(Upper Right) S/N plot for N x Exptime spectra. 
-(Lower Left) Predicted electrons per spectral bin for source plus sky and noise spectra for 1 x Exptime spectrum. 
-(Lower Right) Predicted electrons per spectral bin for source plus sky and noise spectra for N x ExpTime spectra. 
+These plots are:<br> 
+(Upper Left) S/N plot for 1 x ExpTime spectrum<br> 
+(Upper Right) S/N plot for N x Exptime spectra<br>
+(Lower Left) Predicted electrons per spectral bin for source plus sky and noise spectra for 1 x Exptime spectrum<br> 
+(Lower Right) Predicted electrons per spectral bin for source plus sky and noise spectra for N x ExpTime spectra<br> 
 
 ---
 
